@@ -1,0 +1,55 @@
+.main{
+  border-color: black;
+  margin: 5px ;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+
+div {
+  margin: 10px;
+}
+button {
+  background-color: #4CAF50; /* Green background color */
+  border: none; /* Remove borders */
+  color: white; /* White text color */
+  padding: 15px 32px; /* Add padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make it a block element */
+  font-size: 16px; /* Set font size */
+  margin: 4px 2px; /* Add margin */
+  cursor: pointer; 
+}
+button:hover{
+  cursor: pointer;
+}
+
+h4 {
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f2f2f2;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="button"] {
+
+}
+
+input[type="button"]:hover {
+  background-color: #45a049;
+}
