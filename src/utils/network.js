@@ -1,18 +1,16 @@
-import { React } from "react";
-import { ethers } from "ethers";
 import {
   MAINNET_PARAMS,
   SEPOLIA_PARAMS,
   MUMBAI_PARAMS,
-} from "../utils/NetParams";
+} from "./netParams/netParams";
 
 const SetNetwork = async (value) => {
-  let params = null;
+  let params;
   if (value === "0x1") {
     params = MAINNET_PARAMS;
   } else if (value === "0xaa36a7") {
     params = SEPOLIA_PARAMS;
-  } else if(value === "0x13881") {
+  } else if (value === "0x13881") {
     params = MUMBAI_PARAMS;
   }
   await window.ethereum.request({
