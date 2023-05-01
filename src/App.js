@@ -1,5 +1,5 @@
 import "./App.css";
-import ConnectButton from "./connectButton";
+import ConnectButton from "./pages/Home";
 
 function App() {
   return (
