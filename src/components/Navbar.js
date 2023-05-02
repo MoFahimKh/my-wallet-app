@@ -83,50 +83,49 @@ const MyNavbar = () => {
     }
   };
   return (
-  <Navbar bg="dark" expand="lg" variant="dark">
-  <Container fluid>
-    <Navbar.Brand>my-wallet-app</Navbar.Brand>
-    <Navbar.Toggle aria-controls="navbarScroll" />
-    <Navbar.Collapse id="navbarScroll">
-      <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-        {walletAddress !== "Connect!" && (
-          <NavDropdown
-            title={
-              selectedOption
-                ? selectedOption === "0x1"
-                  ? "Mainnet"
-                  : selectedOption === "0xaa36a7"
-                  ? "Sepolia"
-                  : selectedOption === "0x13881"
-                  ? "Mumbai testnet"
-                  : "Select Network"
-                : "Select Network"
-            }
-            value={selectedOption}
-            onSelect={handleOptionChange}
+    <Navbar bg="dark" expand="lg" variant="dark">
+      <Container fluid>
+        <Navbar.Brand>my-wallet-app</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav className="me-auto my-2 my-lg-0" navbarScroll>
+            {walletAddress !== "Connect!" && (
+              <NavDropdown
+                title={
+                  selectedOption
+                    ? selectedOption === "0x1"
+                      ? "Mainnet"
+                      : selectedOption === "0xaa36a7"
+                      ? "Sepolia"
+                      : selectedOption === "0x13881"
+                      ? "Mumbai testnet"
+                      : "Select Network"
+                    : "Select Network"
+                }
+                value={selectedOption}
+                onSelect={handleOptionChange}
+              >
+                <NavDropdown.Item eventKey="0x1">Mainnet</NavDropdown.Item>
+                <NavDropdown.Item eventKey="0xaa36a7">Sepolia</NavDropdown.Item>
+                <NavDropdown.Item eventKey="0x13881">
+                  Mumbai testnet
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
+          </Nav>
+          <Nav.Link style={{ marginRight: "20px" }}>
+            Balance: {accBalance ? accBalance.slice(0, 7) : "0.0"}
+          </Nav.Link>
+          <Button
+            className="ml-5"
+            variant="outline-success"
+            onClick={connectWalletHandler}
           >
-            <NavDropdown.Item eventKey="0x1">Mainnet</NavDropdown.Item>
-            <NavDropdown.Item eventKey="0xaa36a7">Sepolia</NavDropdown.Item>
-            <NavDropdown.Item eventKey="0x13881">
-              Mumbai testnet
-            </NavDropdown.Item>
-          </NavDropdown>
-        )}
-      </Nav>
-      <Nav.Link style={{ marginRight: "20px" }}>
-        Balance: {accBalance ? accBalance.slice(0, 7) : "0.0"}
-      </Nav.Link>
-      <Button
-        className="ml-5"
-        variant="outline-success"
-        onClick={connectWalletHandler}
-      >
-        {walletAddress}
-      </Button>
-    </Navbar.Collapse>
-  </Container>
-</Navbar>
-
+            {walletAddress}
+          </Button>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
