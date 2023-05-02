@@ -24,10 +24,7 @@ const MyNavbar = () => {
     setSelectedOption(eventKey);
     const etherBalance = await GetBalance(account);
     setAccBalance(etherBalance);
-    console.log(accBalance);
-    console.log("selected!" + selectedOption);
     setNetwork(eventKey);
-    console.log(eventKey);
   };
 
   const connectWalletHandler = async () => {

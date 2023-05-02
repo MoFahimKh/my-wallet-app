@@ -1,9 +1,6 @@
-import { useContext } from "react";
 import { ethers } from "ethers";
 import USDT_ABI from "./usdtAbi";
 import WETH_ABI from "./wethAbi";
-
-import { MyContext } from "../contextApi/MyContext";
 
 export const sendEther = async (amount, receiversAddress) => {
   try {

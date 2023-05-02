@@ -40,7 +40,7 @@ const useAccountInfo = () => {
         );
       }
     };
-  }, [account, selectedOption]);
+  }, [account, selectedOption, setAccBalance, setWalletAddress]);
   return { account, setWalletAddress, selectedOption };
 };
 

@@ -1,6 +1,5 @@
 import { React, useState, useContext } from "react";
 import Form from "react-bootstrap/Form";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 import { isValidAddress } from "../utils/ethereum";
 import { sendEther, sendUSDT, sendWETH } from "../utils/transactions";
