@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 import { sendEther, sendUSDT } from "../utils/transactions";
 
-const SendTransactions = () => {
+const SendToken = () => {
   const [amount, setAmount] = useState("");
   const [receiversAddress, setReceiversAddress] = useState("");
   const [selectedToken, setSelectedToken] = useState("ether");
@@ -14,7 +14,6 @@ const SendTransactions = () => {
   };
 
   const handleSendTransaction = async (selectedToken) => {
-    console.log(selectedToken + "adasd");
     if (selectedToken === "ether") {
       await sendEther(amount, receiversAddress);
     } else if (selectedToken === "USDT Stablecoin") {
@@ -71,4 +70,4 @@ const SendTransactions = () => {
   );
 };
 
-export default SendTransactions;
+export default SendToken;

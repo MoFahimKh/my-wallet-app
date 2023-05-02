@@ -4,7 +4,7 @@ import {
   MUMBAI_PARAMS,
 } from "./netParams/netParams";
 
-const SetNetwork = async (value) => {
+const setNetwork = async (value) => {
   let params;
   if (value === "0x1") {
     params = MAINNET_PARAMS;
@@ -19,4 +19,4 @@ const SetNetwork = async (value) => {
   });
 };
 
-export default SetNetwork;
+export default setNetwork;

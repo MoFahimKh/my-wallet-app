@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import SendTransactions from "../components/SendToken";
+import SendToken from "../components/SendToken";
 import MyNavbar from "../components/Navbar";
 
 const Home = () => {
   return (
     <>
       <MyNavbar />
-      <SendTransactions />
+      <SendToken />
     </>
   );
 };

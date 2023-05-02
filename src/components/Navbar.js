@@ -3,8 +3,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
-import { GetAccount, GetBalance } from "../utils/account";
-import SetNetwork from "../utils/network";
+import { GetAccount, GetBalance } from "../utils/ethereum";
+import setNetwork from "../utils/network";
 import { Button } from "react-bootstrap";
 
 const MyNavbar = () => {
@@ -24,7 +24,7 @@ const MyNavbar = () => {
         const etherBalance = await GetBalance(accounts);
         setAccBalance(etherBalance);
         console.log(etherBalance);
-        SetNetwork(selectedOption);
+        setNetwork(selectedOption);
       } else {
         setWalletAddress("Connect!");
         setAccBalance(null);
@@ -47,7 +47,7 @@ const MyNavbar = () => {
         );
       }
     };
-  }, [account, accBalance, selectedOption]);
+  }, [account, selectedOption]);
 
   const handleOptionChange = async (eventKey) => {
     setSelectedOption(eventKey);
@@ -55,7 +55,7 @@ const MyNavbar = () => {
     setAccBalance(etherBalance);
     console.log(accBalance);
     console.log("selected!" + selectedOption);
-    SetNetwork(eventKey);
+    setNetwork(eventKey);
     console.log(eventKey);
   };
 
@@ -65,7 +65,7 @@ const MyNavbar = () => {
         const acc = await GetAccount();
         setAccount(acc);
         //selecting network
-        SetNetwork(selectedOption);
+        setNetwork(selectedOption);
         //connecting wallet
         if (acc[0]) {
           let trimmedAccount =
@@ -83,37 +83,50 @@ const MyNavbar = () => {
     }
   };
   return (
-    <Navbar bg="dark" expand="lg" variant="dark">
-      <Container fluid>
-        <Navbar.Brand>my-wallet-assignment</Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <NavDropdown
-              title="Select Network"
-              value={selectedOption}
-              onSelect={handleOptionChange}
-            >
-              <NavDropdown.Item eventKey="0x1">Mainnet</NavDropdown.Item>
-              <NavDropdown.Item eventKey="0xaa36a7">Sepolia</NavDropdown.Item>
-              <NavDropdown.Item eventKey="0x13881">
-                Mumbai testnet
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-          <Nav.Link style={{ marginRight: "20px" }}>
-            Balance: {accBalance ? accBalance.slice(0, 7) : "0.0"}
-          </Nav.Link>
-          <Button
-            className="ml-5"
-            variant="outline-success"
-            onClick={connectWalletHandler}
+  <Navbar bg="dark" expand="lg" variant="dark">
+  <Container fluid>
+    <Navbar.Brand>my-wallet-app</Navbar.Brand>
+    <Navbar.Toggle aria-controls="navbarScroll" />
+    <Navbar.Collapse id="navbarScroll">
+      <Nav className="me-auto my-2 my-lg-0" navbarScroll>
+        {walletAddress !== "Connect!" && (
+          <NavDropdown
+            title={
+              selectedOption
+                ? selectedOption === "0x1"
+                  ? "Mainnet"
+                  : selectedOption === "0xaa36a7"
+                  ? "Sepolia"
+                  : selectedOption === "0x13881"
+                  ? "Mumbai testnet"
+                  : "Select Network"
+                : "Select Network"
+            }
+            value={selectedOption}
+            onSelect={handleOptionChange}
           >
-            {walletAddress}
-          </Button>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            <NavDropdown.Item eventKey="0x1">Mainnet</NavDropdown.Item>
+            <NavDropdown.Item eventKey="0xaa36a7">Sepolia</NavDropdown.Item>
+            <NavDropdown.Item eventKey="0x13881">
+              Mumbai testnet
+            </NavDropdown.Item>
+          </NavDropdown>
+        )}
+      </Nav>
+      <Nav.Link style={{ marginRight: "20px" }}>
+        Balance: {accBalance ? accBalance.slice(0, 7) : "0.0"}
+      </Nav.Link>
+      <Button
+        className="ml-5"
+        variant="outline-success"
+        onClick={connectWalletHandler}
+      >
+        {walletAddress}
+      </Button>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
+
   );
 };
 
