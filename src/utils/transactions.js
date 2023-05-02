@@ -34,7 +34,6 @@ export const sendUSDT = async (amount, receiversAddress) => {
       const transx = await USDTContract.transfer(receiversAddress, amountInWei);
       await transx.wait();
     } else {
-      console.log("not enough usdt");
       alert("not enough usdt");
     }
   } catch (error) {
@@ -52,10 +51,7 @@ export const sendWETH = async (amount, receiversAddress) => {
     const signerAdd = await signer.getAddress();
     const balance = await WETHContract.balanceOf(signerAdd);
     if (balance > 0) {
-      const transx = await WETHContract.transfer(
-        receiversAddress,
-        amountInWei
-      );
+      const transx = await WETHContract.transfer(receiversAddress, amountInWei);
       await transx.wait();
     } else {
       console.log("insufficient weth....");

@@ -10,10 +10,6 @@ import setNetwork from "../utils/network";
 import { Button } from "react-bootstrap";
 
 const MyNavbar = () => {
-  // const [account, setAccount] = useState(null);
-  // const [walletAddress, setWalletAddress] = useState("Connect!");
-  // const [accBalance, setAccBalance] = useState("");
-  // const [selectedOption, setSelectedOption] = useState("0xaa36a7");
   const {
     setAccount,
     walletAddress,

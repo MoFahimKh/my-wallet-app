@@ -4,16 +4,8 @@ import { GetBalance } from "../utils/ethereum";
 import setNetwork from "../utils/network";
 
 const useAccountInfo = () => {
-  const {
-    account,
-    setAccount,
-    walletAddress,
-    setWalletAddress,
-    accBalance,
-    setAccBalance,
-    selectedOption,
-    setSelectedOption,
-  } = useContext(MyContext);
+  const { account, setWalletAddress, setAccBalance, selectedOption } =
+    useContext(MyContext);
   useEffect(() => {
     const handleAccountsChanged = async (accounts) => {
       if (accounts.length > 0) {
@@ -49,7 +41,7 @@ const useAccountInfo = () => {
       }
     };
   }, [account, selectedOption]);
-  return {account , setWalletAddress, selectedOption};
+  return { account, setWalletAddress, selectedOption };
 };
 
 export default useAccountInfo;
