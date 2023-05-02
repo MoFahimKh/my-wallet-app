@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import useAccountInfo from "../hooks/useAccountInfo";
+import { MyContext } from "../contextApi/MyContext";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -8,46 +10,19 @@ import setNetwork from "../utils/network";
 import { Button } from "react-bootstrap";
 
 const MyNavbar = () => {
-  const [account, setAccount] = useState(null);
-  const [walletAddress, setWalletAddress] = useState("Connect!");
-  const [accBalance, setAccBalance] = useState("");
-  const [selectedOption, setSelectedOption] = useState("0xaa36a7");
+  // const [account, setAccount] = useState(null);
+  // const [walletAddress, setWalletAddress] = useState("Connect!");
+  // const [accBalance, setAccBalance] = useState("");
+  // const [selectedOption, setSelectedOption] = useState("0xaa36a7");
+  const {
+    setAccount,
+    walletAddress,
+    accBalance,
+    setAccBalance,
+    setSelectedOption,
+  } = useContext(MyContext);
 
-  useEffect(() => {
-    const handleAccountsChanged = async (accounts) => {
-      if (accounts.length > 0) {
-        setWalletAddress(
-          accounts[0].substring(0, 6) +
-            "..." +
-            accounts[0].substring(accounts[0].length - 4, accounts[0].length)
-        );
-        const etherBalance = await GetBalance(accounts);
-        setAccBalance(etherBalance);
-        console.log(etherBalance);
-        setNetwork(selectedOption);
-      } else {
-        setWalletAddress("Connect!");
-        setAccBalance(null);
-      }
-    };
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", handleAccountsChanged);
-    }
-    if (account) {
-      (async () => {
-        const etherBalance = await GetBalance(account);
-        setAccBalance(etherBalance);
-      })();
-    }
-    return () => {
-      if (window.ethereum) {
-        window.ethereum.removeListener(
-          "accountsChanged",
-          handleAccountsChanged
-        );
-      }
-    };
-  }, [account, selectedOption]);
+  const { account, setWalletAddress, selectedOption } = useAccountInfo();
 
   const handleOptionChange = async (eventKey) => {
     setSelectedOption(eventKey);
@@ -85,7 +60,7 @@ const MyNavbar = () => {
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
       <Container fluid>
-        <Navbar.Brand>my-wallet-app</Navbar.Brand>
+        <Navbar.Brand>My wallet app</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>

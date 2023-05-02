@@ -1,9 +1,11 @@
 .main{
   border-color: black;
   margin: 5px ;
-  text-align: center;
+ 
 }
-
+Button{
+  text-align: center  ;
+}
 .formContainer form {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
@@ -33,8 +35,7 @@ color:#fff;;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
+ 
   padding: 20px;
   border: 2px solid #ccc;
   border-radius: 10px;

@@ -14,3 +14,12 @@ export const GetBalance = async (account) => {
   });
   return ethers.utils.formatUnits(balance, "ether");
 };
+
+export const isValidAddress = (receiversAddress) => {
+  try {
+    ethers.utils.getAddress(receiversAddress);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
