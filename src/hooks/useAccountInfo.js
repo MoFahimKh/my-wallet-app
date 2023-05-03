@@ -2,6 +2,7 @@ import { useEffect, useContext } from "react";
 import { MyContext } from "../contextApi/MyContext";
 import { getAccount, getBalance } from "../utils/ethereum";
 import setNetwork from "../utils/network";
+import trimAddress from "../utils/trimAddress";
 
 const useAccountInfo = () => {
   const {
@@ -20,10 +21,7 @@ const useAccountInfo = () => {
         setAccount(acc);
         setNetwork(selectedOption);
         if (acc[0]) {
-          let trimmedAccount =
-            acc[0].substring(0, 6) +
-            "..." +
-            acc[0].substring(acc[0].length - 4, acc[0].length);
+          let trimmedAccount = trimAddress(acc[0]);
           setWalletAddress(trimmedAccount);
           const etherBalance = await getBalance(acc[0]);
           setAccBalance(etherBalance);
@@ -62,6 +60,7 @@ const useAccountInfo = () => {
     setAccBalance,
     setWalletAddress,
     setIsTransactionsComplete,
+    connectWalletHandler
   ]);
   return { account, setWalletAddress, selectedOption, connectWalletHandler };
 };
