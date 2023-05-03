@@ -1,13 +1,13 @@
 import { ethers } from "ethers";
 
-export const GetAccount = async () => {
+export const getAccount = async () => {
   let value = await window.ethereum.request({
     method: "eth_requestAccounts",
   });
   return value;
 };
 
-export const GetBalance = async (account) => {
+export const getBalance = async (account) => {
   let balance = await window.ethereum.request({
     method: "eth_getBalance",
     params: [account[0]],

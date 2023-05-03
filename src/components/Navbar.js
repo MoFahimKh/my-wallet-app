@@ -2,11 +2,11 @@ import { useContext } from "react";
 import useAccountInfo from "../hooks/useAccountInfo";
 import { MyContext } from "../contextApi/MyContext";
 import Nav from "react-bootstrap/Nav";
+import setNetwork from "../utils/network";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
-import { GetAccount, GetBalance } from "../utils/ethereum";
-import setNetwork from "../utils/network";
+import { getAccount, getBalance } from "../utils/ethereum";
 import { Button } from "react-bootstrap";
 
 const MyNavbar = () => {
@@ -18,38 +18,36 @@ const MyNavbar = () => {
     setSelectedOption,
   } = useContext(MyContext);
 
-  const { account, setWalletAddress, selectedOption } = useAccountInfo();
+  const { account, setWalletAddress, selectedOption, connectWalletHandler } =
+    useAccountInfo();
 
   const handleOptionChange = async (eventKey) => {
     setSelectedOption(eventKey);
-    const etherBalance = await GetBalance(account);
+    const etherBalance = await getBalance(account);
     setAccBalance(etherBalance);
     setNetwork(eventKey);
   };
-
-  const connectWalletHandler = async () => {
-    try {
-      if (window.ethereum && window.ethereum.isMetaMask) {
-        const acc = await GetAccount();
-        setAccount(acc);
-        //selecting network
-        setNetwork(selectedOption);
-        //connecting wallet
-        if (acc[0]) {
-          let trimmedAccount =
-            acc[0].substring(0, 6) +
-            "..." +
-            acc[0].substring(acc[0].length - 4, acc[0].length);
-          setWalletAddress(trimmedAccount);
-        }
-        if (!Error) {
-          setWalletAddress("Connect!");
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const onConnectButtonClick = () => {
+    setSelectedOption(selectedOption);
+    setWalletAddress(walletAddress);
+    connectWalletHandler();
   };
+
+  let titleValue;
+  switch (selectedOption) {
+    case "0x1":
+      titleValue = "Mainnet";
+      break;
+    case "0xaa36a7":
+      titleValue = "Sepolia";
+      break;
+    case "0x13881":
+      titleValue = "Mumbai testnet";
+      break;
+    default:
+      titleValue = "Select Network";
+  }
+
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
       <Container fluid>
@@ -59,17 +57,7 @@ const MyNavbar = () => {
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
             {walletAddress !== "Connect!" && (
               <NavDropdown
-                title={
-                  selectedOption
-                    ? selectedOption === "0x1"
-                      ? "Mainnet"
-                      : selectedOption === "0xaa36a7"
-                      ? "Sepolia"
-                      : selectedOption === "0x13881"
-                      ? "Mumbai testnet"
-                      : "Select Network"
-                    : "Select Network"
-                }
+                title={titleValue}
                 value={selectedOption}
                 onSelect={handleOptionChange}
               >

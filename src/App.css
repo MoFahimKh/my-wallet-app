@@ -3,6 +3,10 @@
   margin: 5px ;
  
 }
+.coinIcon{
+  height: 40px;
+  width: 40px;
+}
 Button{
   text-align: center  ;
 }

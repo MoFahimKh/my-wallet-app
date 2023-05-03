@@ -6,17 +6,26 @@ import {
 
 const setNetwork = async (value) => {
   let params;
-  if (value === "0x1") {
-    params = MAINNET_PARAMS;
-  } else if (value === "0xaa36a7") {
-    params = SEPOLIA_PARAMS;
-  } else if (value === "0x13881") {
-    params = MUMBAI_PARAMS;
+  switch (value) {
+    case "0x1":
+      params = MAINNET_PARAMS;
+      break;
+    case "0xaa36a7":
+      params = SEPOLIA_PARAMS;
+      break;
+    case "0x13881":
+      params = MUMBAI_PARAMS;
+      break;
+    default:
+      params = null;
+      break;
   }
-  await window.ethereum.request({
-    method: "wallet_addEthereumChain",
-    params: [params],
-  });
+  if (params) {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [params],
+    });
+  }
 };
 
 export default setNetwork;

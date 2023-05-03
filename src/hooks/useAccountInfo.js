@@ -1,47 +1,69 @@
 import { useEffect, useContext } from "react";
 import { MyContext } from "../contextApi/MyContext";
-import { GetBalance } from "../utils/ethereum";
+import { getAccount, getBalance } from "../utils/ethereum";
 import setNetwork from "../utils/network";
 
 const useAccountInfo = () => {
-  const { account, setWalletAddress, setAccBalance, selectedOption } =
-    useContext(MyContext);
-  useEffect(() => {
-    const handleAccountsChanged = async (accounts) => {
-      if (accounts.length > 0) {
-        setWalletAddress(
-          accounts[0].substring(0, 6) +
-            "..." +
-            accounts[0].substring(accounts[0].length - 4, accounts[0].length)
-        );
-        const etherBalance = await GetBalance(accounts);
-        setAccBalance(etherBalance);
-        console.log(etherBalance);
+  const {
+    account,
+    setAccount,
+    setWalletAddress,
+    setAccBalance,
+    selectedOption,
+    setIsTransactionsComplete,
+  } = useContext(MyContext);
+
+  const connectWalletHandler = async () => {
+    try {
+      if (window.ethereum && window.ethereum.isMetaMask) {
+        const acc = await getAccount();
+        setAccount(acc);
         setNetwork(selectedOption);
-      } else {
-        setWalletAddress("Connect!");
-        setAccBalance(null);
+        if (acc[0]) {
+          let trimmedAccount =
+            acc[0].substring(0, 6) +
+            "..." +
+            acc[0].substring(acc[0].length - 4, acc[0].length);
+          setWalletAddress(trimmedAccount);
+          const etherBalance = await getBalance(acc[0]);
+          setAccBalance(etherBalance);
+        } else {
+          setWalletAddress("Connect!");
+          setAccBalance(null);
+        }
       }
-    };
+      if (Error) {
+        setWalletAddress("Connect!");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
     if (window.ethereum) {
-      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      window.ethereum.on("accountsChanged", connectWalletHandler);
+      window.ethereum.on("chainChanged", connectWalletHandler);
     }
     if (account) {
       (async () => {
-        const etherBalance = await GetBalance(account);
+        const etherBalance = await getBalance(account);
         setAccBalance(etherBalance);
       })();
     }
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener(
-          "accountsChanged",
-          handleAccountsChanged
-        );
+        window.ethereum.removeListener("accountsChanged", connectWalletHandler);
+        window.ethereum.removeListener("chainChanged", connectWalletHandler);
       }
     };
-  }, [account, selectedOption, setAccBalance, setWalletAddress]);
-  return { account, setWalletAddress, selectedOption };
+  }, [
+    account,
+    selectedOption,
+    setAccBalance,
+    setWalletAddress,
+    setIsTransactionsComplete,
+  ]);
+  return { account, setWalletAddress, selectedOption, connectWalletHandler };
 };
 
 export default useAccountInfo;

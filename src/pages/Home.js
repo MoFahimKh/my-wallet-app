@@ -9,6 +9,7 @@ const Home = () => {
   const [walletAddress, setWalletAddress] = useState("Connect!");
   const [accBalance, setAccBalance] = useState("");
   const [selectedOption, setSelectedOption] = useState("0xaa36a7");
+  const [isTransactionComplete, setIsTransactionComplete] = useState(false);
 
   return (
     <>
@@ -22,6 +23,8 @@ const Home = () => {
           setAccBalance,
           selectedOption,
           setSelectedOption,
+          isTransactionComplete,
+          setIsTransactionComplete
         }}
       >
         <MyNavbar />

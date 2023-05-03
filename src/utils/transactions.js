@@ -12,7 +12,6 @@ export const sendEther = async (amount, receiversAddress) => {
     };
     const signAndSend = await signer.sendTransaction(transx);
     signAndSend.wait();
-    window.location.reload();
   } catch (error) {
     console.log(error);
   }
