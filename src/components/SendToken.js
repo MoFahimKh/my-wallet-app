@@ -1,4 +1,4 @@
-import { React, useState, useContext, Fragment } from "react";
+import { React, useState, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import CoinIcon from "./CoinIcon";
 import { Button } from "react-bootstrap";
@@ -7,7 +7,14 @@ import { sendEther, sendUSDT, sendWETH } from "../utils/transactions";
 import { MyContext } from "../contextApi/MyContext";
 
 const SendToken = () => {
-  const { accBalance, selectedOption, isTransactionComplete, setIsTransactionComplete } = useContext(MyContext);
+  const {
+    accBalance,
+    selectedOption,
+    isTransactionComplete,
+    setIsTransactionComplete,
+    setTokenBal,
+    tokenBal,
+  } = useContext(MyContext);
   const [amount, setAmount] = useState("");
   const [receiversAddress, setReceiversAddress] = useState("");
   const [selectedToken, setSelectedToken] = useState("ether");
@@ -20,17 +27,21 @@ const SendToken = () => {
       isValidAddress(receiversAddress);
       await sendEther(amount, receiversAddress);
       setIsTransactionComplete(true);
-      console.log(isTransactionComplete)
     } else if (selectedToken === "USDT Stablecoin") {
-      await sendUSDT(amount, receiversAddress);
+      isValidAddress(receiversAddress);
+      await sendUSDT(amount, receiversAddress, setTokenBal);
+      setIsTransactionComplete(true);
     } else if (selectedToken === "WETH") {
-      await sendWETH(amount, receiversAddress);
+      isValidAddress(receiversAddress);
+      await sendWETH(amount, receiversAddress, setTokenBal);
+      console.log(tokenBal);
+      setIsTransactionComplete(true);
     }
   };
 
   return (
     <div className="formContainer">
-      <Form bg="dark">
+      <Form>
         <Form.Group className=" mb-3">
           <Form.Select
             as="select"
@@ -38,12 +49,7 @@ const SendToken = () => {
             aria-label="Default select example"
             defaultValue="ether"
           >
-            <option value="ether">
-              <Fragment>
-                <CoinIcon coinId="ethereum" />
-                ether
-              </Fragment>
-            </option>
+            <option value="ether">ether</option>
             <option value="USDT Stablecoin">USDT Stablecoin</option>
             <option value="WETH">WETH</option>
           </Form.Select>
@@ -61,7 +67,7 @@ const SendToken = () => {
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>
-            Send token{" "}
+            Send token
             {selectedToken === "ether" && <CoinIcon coinId="ethereum" />}
             {selectedToken === "USDT Stablecoin" && (
               <CoinIcon coinId="tether" />
@@ -93,7 +99,7 @@ const SendToken = () => {
             value={receiversAddress}
             onChange={(e) => setReceiversAddress(e.target.value)}
           />
-          <Form.Text className="text-danger"></Form.Text>
+          <Form.Text className="text-success">{tokenBal}</Form.Text>
         </Form.Group>
 
         <Button

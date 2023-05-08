@@ -6,6 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import { Button } from "react-bootstrap";
 import NavDropdownValue from "./NavDropdownValue";
+import PageToggle from "./PageToggle";
 
 const MyNavbar = () => {
   const { walletAddress, accBalance } = useContext(MyContext);
@@ -16,6 +17,7 @@ const MyNavbar = () => {
     <Navbar bg="dark" expand="lg" variant="dark">
       <Container fluid>
         <Navbar.Brand>My wallet app</Navbar.Brand>
+        <PageToggle />
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>

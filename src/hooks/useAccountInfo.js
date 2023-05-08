@@ -12,6 +12,7 @@ const useAccountInfo = () => {
     setAccBalance,
     selectedOption,
     setIsTransactionsComplete,
+    tokenBal
   } = useContext(MyContext);
 
   const connectWalletHandler = async () => {
@@ -62,7 +63,7 @@ const useAccountInfo = () => {
     setIsTransactionsComplete,
     connectWalletHandler
   ]);
-  return { account, setWalletAddress, selectedOption, connectWalletHandler };
+  return { account, setWalletAddress, selectedOption, connectWalletHandler , tokenBal};
 };
 
 export default useAccountInfo;
