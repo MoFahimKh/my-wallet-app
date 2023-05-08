@@ -43,7 +43,7 @@ export const sendUSDT = async (amount, receiversAddress, setTokenBal) => {
 export const sendWETH = async (amount, receiversAddress, setTokenBal) => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    let signer = await getSigner();
     const WETHAddress = "0xD0dF82dE051244f04BfF3A8bB1f62E1cD39eED92";
     const WETHContract = new ethers.Contract(WETHAddress, WETH_ABI, signer);
     const amountInWei = ethers.utils.parseEther(amount);

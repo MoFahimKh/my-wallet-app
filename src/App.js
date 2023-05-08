@@ -13,11 +13,10 @@ function App() {
   const [isTransactionComplete, setIsTransactionComplete] = useState(false);
   const [tokenBal, setTokenBal] = useState(null);
   const [slippageTolerance, setSlippageTolerance] = useState("2");
-  const [transactionDeadline, setTransactionDeadline] = useState(10);
+  const [transactionDeadline, setTransactionDeadline] = useState("10");
   const [swapRatio, setSwapRatio] = useState(null);
   const [swappedPrice, setSwappedPrice] = useState(0);
   const [swapTransaction, setSwapTransaction] = useState(null);
-
   return (
     <div className="main">
       <MyContext.Provider

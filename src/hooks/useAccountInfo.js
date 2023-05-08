@@ -63,7 +63,7 @@ const useAccountInfo = () => {
     setIsTransactionsComplete,
     connectWalletHandler
   ]);
-  return { account, setWalletAddress, selectedOption, connectWalletHandler , tokenBal};
+  return { account, setWalletAddress, selectedOption, connectWalletHandler };
 };
 
 export default useAccountInfo;

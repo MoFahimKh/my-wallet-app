@@ -4,9 +4,9 @@ import { ethers, BigNumber } from "ethers";
 import JSBI from "jsbi";
 import WETH_ABI from "../utils/wethAbi";
 
-const v3SwaprouterAddress = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
+const v3SwaprouterAddress = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
 const chainId = 80001;
-const provider = new ethers.providers.Web3Provider(window.ethereum);
+const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/4458cf4d1689497b9a38b1d6bbf05e78");
 const router = new AlphaRouter({ chainId: chainId, provider: provider });
 
 const tknName = "Wrapped Ether";
@@ -39,9 +39,9 @@ export const getPrice = async (
   deadline,
   walletAddress
 ) => {
-  const percentSlippage = new Percent(slippageAmount, 100); 
+  const percentSlippage = new Percent(slippageAmount, tknDecimal);
   const wei = ethers.utils.parseUnits(inputAmount.toString());
-  console.log(wei);
+  console.log(wei.toString());
   const currencyAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei));
   const route = await router.route(
     currencyAmount,
@@ -64,7 +64,6 @@ export const getPrice = async (
 
   const quoteAmountOut = route.quote.toFixed(6);
   const ratio = (inputAmount / quoteAmountOut).toFixed(3);
-
   return [transaction, quoteAmountOut, ratio];
 };
 
@@ -72,6 +71,5 @@ export const runSwap = async (transaction, signer) => {
   const approvalAmount = ethers.utils.parseUnits("10", 18).toString();
   const contract0 = wethContract();
   await contract0.connect(signer).approve(v3SwaprouterAddress, approvalAmount);
-
   signer.sendTransaction(transaction);
 };

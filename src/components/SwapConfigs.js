@@ -12,10 +12,12 @@ const SwapConfigs = () => {
 
   const handleSlippageToleranceChange = (e) => {
     setSlippageTolerance(e.target.value);
+    console.log("slippage"+slippageTolerance);
   };
 
   const handleTransactionDeadlineChange = (e) => {
     setTransactionDeadline(e.target.value);
+    console.log("deadline"+transactionDeadline);
   };
 
   return (

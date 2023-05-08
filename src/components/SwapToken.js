@@ -1,24 +1,18 @@
-import { Form, Button, Ratio } from "react-bootstrap";
-import { React, useContext, useState } from "react";
+import { Form, Button } from "react-bootstrap";
+import { React, useContext, useState, useEffect } from "react";
 import "../App.css";
-import { ethers } from "ethers";
 import { GearFill } from "react-bootstrap-icons";
 import SwapConfigs from "./SwapConfigs";
 import { MyContext } from "../contextApi/MyContext";
 import getTokenBalance from "../utils/getTokenBalance";
 import CoinIcon from "./CoinIcon";
-import {
-  wethContract,
-  wmaticContract,
-  getPrice,
-  runSwap,
-} from "./AlphaRouterService";
+import getSigner from "../utils/getSigner";
+import { getPrice, runSwap } from "./AlphaRouterService";
 
 const SwapToken = () => {
-  // const provider = new ethers.providers.Web3Provider(window.ethereum);
-  // const signer = provider.getSigner();
   const [clicked, setClicked] = useState(false);
-  const [inputAmount, setInputAmount] = useState();
+  const [inputAmount, setInputAmount] = useState("");
+
   const handleChange = (event) => {
     setInputAmount(event.target.value);
   };
@@ -26,8 +20,7 @@ const SwapToken = () => {
   const {
     tokenBal,
     setTokenBal,
-    selectedToken,
-    slippageTolearnce,
+    slippageTolerance,
     transactionDeadline,
     swapRatio,
     setSwapRatio,
@@ -37,14 +30,23 @@ const SwapToken = () => {
     setSwapTransaction,
   } = useContext(MyContext);
 
-  getPrice(0.05, 2, 10, "0x85392e765680737b29E449FAF37df956f0931f58").then(
-    (data) => {
+  useEffect(() => {
+    getPrice(
+      inputAmount,
+      slippageTolerance,
+      Math.floor(Date.now() / 1000 + transactionDeadline * 60),
+      "0x85392e765680737b29E449FAF37df956f0931f58"
+    ).then((data) => {
       console.log(data);
-      // setSwapTransaction(data[0]);
-      // setSwappedPrice(data[1]);
+      setSwapTransaction(data[0]);
+      console.log("trans " + swapTransaction);
+      setSwappedPrice(data[1]);
+      console.log("s price " + swappedPrice);
       setSwapRatio(data[2]);
-    }
-  );
+      console.log("ratio " + swapRatio);
+    });
+  }, [inputAmount]);
+  
 
   return (
     <div className="body">
@@ -77,9 +79,22 @@ const SwapToken = () => {
             <Form.Label>
               WMATIC {<CoinIcon coinId="matic-network" />}
             </Form.Label>
-            <Form.Control type="text" placeholder="" />
+            <Form.Control
+              type="text"
+              placeholder=""
+              readOnly
+              value={inputAmount / swapRatio}
+            />
+            <Form.Label></Form.Label>
           </Form.Group>
-          <Button className="" variant="outline-success">
+          <Button
+            className=""
+            variant="outline-success"
+            onClick={async () => {
+              const signer = await getSigner();
+              runSwap(swapTransaction, signer);
+            }}
+          >
             Swap
           </Button>
           <Form.Label></Form.Label>
