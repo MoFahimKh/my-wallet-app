@@ -7,7 +7,6 @@ import SwapConfigs from "./SwapConfigs";
 import { MyContext } from "../contextApi/MyContext";
 import getTokenBalance from "../utils/getTokenBalance";
 import CoinIcon from "./CoinIcon";
-import getSigner from "../utils/getSigner";
 import {
   wethContract,
   wmaticContract,
@@ -15,7 +14,7 @@ import {
   runSwap,
 } from "./AlphaRouterService";
 
-const SwapToken = async () => {
+const SwapToken =  () => {
   // const provider = new ethers.providers.Web3Provider(window.ethereum);
   // const signer = provider.getSigner();
   const [clicked, setClicked] = useState(false);
@@ -41,8 +40,8 @@ const SwapToken = async () => {
   getPrice(0.05, 2, 10, "0x85392e765680737b29E449FAF37df956f0931f58").then(
     (data) => {
       console.log(data);
-      setSwapTransaction(data[0]);
-      setSwappedPrice(data[1]);
+      // setSwapTransaction(data[0]);
+      // setSwappedPrice(data[1]);
       setSwapRatio(data[2]);
     }
   );
