@@ -14,7 +14,7 @@ import {
   runSwap,
 } from "./AlphaRouterService";
 
-const SwapToken =  () => {
+const SwapToken = () => {
   // const provider = new ethers.providers.Web3Provider(window.ethereum);
   // const signer = provider.getSigner();
   const [clicked, setClicked] = useState(false);
