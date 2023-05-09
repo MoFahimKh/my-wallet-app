@@ -16,29 +16,6 @@ const provider = new ethers.providers.JsonRpcProvider(
   "https://polygon-mumbai.infura.io/v3/4458cf4d1689497b9a38b1d6bbf05e78"
 );
 const router = new AlphaRouter({ chainId: chainId, provider: provider });
-
-// const WETH = new Token(
-//   chainId,
-//   WETH_TOKEN.address,
-//   WETH_TOKEN.decimal,
-//   WETH_TOKEN.symbol,
-//   WETH_TOKEN.name
-// );
-
-// const WMATIC = new Token(
-//   chainId,
-//   WMATIC_TOKEN.address,
-//   WMATIC_TOKEN.decimal,
-//   WMATIC_TOKEN.symbol,
-//   WMATIC_TOKEN.name
-// );
-// const LINK = new Token(
-//   chainId,
-//   LINK_TOKEN.address,
-//   LINK_TOKEN.decimal,
-//   LINK_TOKEN.symbol,
-//   LINK_TOKEN.name
-// );
 export const wethContract = () =>
   new ethers.Contract(WETH_TOKEN.address.toString(), ERC20_ABI, provider);
 export const wmaticContract = () =>
@@ -133,7 +110,7 @@ export const runSwap = async (transaction, signer, inputTokenSelected) => {
   } else if (inputTokenSelected === "WMATIC") {
     contract0 = wmaticContract();
   } else if ((inputTokenSelected = "LINK")) {
-    linkContract();
+    contract0 = linkContract();
   }
   await contract0.connect(signer).approve(v3SwaprouterAddress, approvalAmount);
   signer.sendTransaction(transaction);
