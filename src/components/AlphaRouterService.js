@@ -3,7 +3,6 @@ import { CurrencyAmount, TradeType, Percent, Token } from "@uniswap/sdk-core";
 import { ethers, BigNumber } from "ethers";
 import JSBI from "jsbi";
 import ERC20_ABI from "../utils/erc20Abi";
-import getTokenInstance from "../utils/getTokenInstance";
 import {
   WETH_TOKEN,
   LINK_TOKEN,
