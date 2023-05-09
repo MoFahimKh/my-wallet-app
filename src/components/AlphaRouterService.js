@@ -43,24 +43,67 @@ export const wethContract = () =>
   new ethers.Contract(WETH_TOKEN.address.toString(), ERC20_ABI, provider);
 export const wmaticContract = () =>
   new ethers.Contract(WMATIC_TOKEN.address.toString(), ERC20_ABI, provider);
-  export const linkContract = () =>
+export const linkContract = () =>
   new ethers.Contract(LINK_TOKEN.address.toString(), ERC20_ABI, provider);
 
+const getToken = (tokenName) => {
+  switch (tokenName) {
+    case "WETH":
+      return new Token(
+        chainId,
+        WETH_TOKEN.address,
+        WETH_TOKEN.decimal,
+        WETH_TOKEN.symbol,
+        WETH_TOKEN.name
+      );
+    case "WMATIC":
+      return new Token(
+        chainId,
+        WMATIC_TOKEN.address,
+        WMATIC_TOKEN.decimal,
+        WMATIC_TOKEN.symbol,
+        WMATIC_TOKEN.name
+      );
+    case "LINK":
+      return new Token(
+        chainId,
+        LINK_TOKEN.address,
+        LINK_TOKEN.decimal,
+        LINK_TOKEN.symbol,
+        LINK_TOKEN.name
+      );
+    default:
+      return new Token(
+        chainId,
+        WETH_TOKEN.address,
+        WETH_TOKEN.decimal,
+        WETH_TOKEN.symbol,
+        WETH_TOKEN.name
+      );
+  }
+};
 
 export const getPrice = async (
   inputAmount,
   slippageAmount,
   deadline,
-  walletAddress
+  walletAddress,
+  inputTokenSelected,
+  outputTokenSelected
 ) => {
   const percentSlippage = new Percent(slippageAmount, tknDecimal);
   const wei = ethers.utils.parseUnits(inputAmount.toString());
-  console.log(wei.toString());
-  console.log(WETH_TOKEN.address.toString());
-  const currencyAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei));
+  const inputToken = getToken(inputTokenSelected);
+  console.log(inputToken);
+  const outputToken = getToken(outputTokenSelected);
+  console.log(outputToken);
+  const currencyAmount = CurrencyAmount.fromRawAmount(
+    inputToken,
+    JSBI.BigInt(wei)
+  );
   const route = await router.route(
     currencyAmount,
-    WMATIC,
+    outputToken,
     TradeType.EXACT_INPUT,
     {
       recipient: walletAddress,
@@ -82,9 +125,16 @@ export const getPrice = async (
   return [transaction, quoteAmountOut, ratio];
 };
 
-export const runSwap = async (transaction, signer) => {
+export const runSwap = async (transaction, signer, inputTokenSelected) => {
   const approvalAmount = ethers.utils.parseUnits("10", 18).toString();
-  const contract0 = wethContract();
+  let contract0;
+  if (inputTokenSelected === "WETH") {
+    contract0 = wethContract();
+  } else if (inputTokenSelected === "WMATIC") {
+    contract0 = wmaticContract();
+  } else if ((inputTokenSelected = "LINK")) {
+    linkContract();
+  }
   await contract0.connect(signer).approve(v3SwaprouterAddress, approvalAmount);
   signer.sendTransaction(transaction);
 };

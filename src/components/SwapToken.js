@@ -34,6 +34,8 @@ const SwapToken = () => {
     setSwappedPrice,
     swapTransaction,
     setSwapTransaction,
+    inputTokenSelected,
+    outputTokenSelected,
   } = useContext(MyContext);
   console.log("inputAmount", inputAmount);
   useEffect(() => {
@@ -41,7 +43,9 @@ const SwapToken = () => {
       inputAmount,
       slippageTolerance,
       Math.floor(Date.now() / 1000 + transactionDeadline * 60),
-      signerAddress
+      signerAddress,
+      inputTokenSelected,
+      outputTokenSelected
     ).then((data) => {
       console.log(data);
       setSwapTransaction(data[0]);
@@ -49,7 +53,7 @@ const SwapToken = () => {
       setSwapRatio(data[2]);
     });
     getSignerAddress();
-  }, [inputAmount]);
+  }, [inputAmount, inputTokenSelected, outputTokenSelected]);
 
   return (
     <div className="body">
@@ -66,8 +70,21 @@ const SwapToken = () => {
           {clicked === true && <SwapConfigs />}
 
           <Form.Group>
-            <SelectTokenDropdown  typeOfToken="input"/>
-            <Form.Label>WETH {<CoinIcon coinId="weth" />}</Form.Label>{" "}
+            <SelectTokenDropdown typeOfToken="input" />
+            <Form.Label>
+              {inputTokenSelected}{" "}
+              {
+                <CoinIcon
+                  coinId={
+                    inputTokenSelected === "WMATIC"
+                      ? "matic-network"
+                      : inputTokenSelected === "LINK"
+                      ? "chainlink"
+                      : "weth"
+                  }
+                />
+              }
+            </Form.Label>{" "}
             <Form.Control
               type="text"
               placeholder="Enter amount"
@@ -75,15 +92,26 @@ const SwapToken = () => {
               onChange={handleChange}
             />
             {getTokenBalance(setTokenBal) && (
-              <Form.Label className="">{"Weth bal: " + tokenBal}</Form.Label>
+              <Form.Label className="">{`${inputTokenSelected} balance : ${tokenBal}`}</Form.Label>
             )}
           </Form.Group>
           <SelectTokenDropdown typeOfToken="output" />
-          <div>1 WMATIC = {swapRatio} WETH </div>
+          <div>{`1 ${outputTokenSelected} = ${swapRatio} ${inputTokenSelected} `}</div>
           <Form.Group>
             <Form.Label>
-              WMATIC {<CoinIcon coinId="matic-network" />}
-            </Form.Label>
+              {outputTokenSelected}{" "}
+              {
+                <CoinIcon
+                  coinId={
+                    outputTokenSelected === "WMATIC"
+                      ? "matic-network"
+                      : outputTokenSelected === "LINK"
+                      ? "chainlink"
+                      : "weth"
+                  }
+                />
+              }
+            </Form.Label>{" "}
             <Form.Control
               type="text"
               placeholder=""
@@ -97,7 +125,7 @@ const SwapToken = () => {
             variant="outline-success"
             onClick={async () => {
               const signer = await getSigner();
-              runSwap(swapTransaction, signer);
+              runSwap(swapTransaction, signer, inputTokenSelected);
             }}
           >
             Swap

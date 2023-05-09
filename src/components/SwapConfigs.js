@@ -12,12 +12,12 @@ const SwapConfigs = () => {
 
   const handleSlippageToleranceChange = (e) => {
     setSlippageTolerance(e.target.value);
-    console.log("slippage"+slippageTolerance);
+    console.log("slippage" + slippageTolerance);
   };
 
   const handleTransactionDeadlineChange = (e) => {
     setTransactionDeadline(e.target.value);
-    console.log("deadline"+transactionDeadline);
+    console.log("deadline" + transactionDeadline);
   };
 
   return (
@@ -25,7 +25,7 @@ const SwapConfigs = () => {
       <div className="body">
         <div className="gearFormContainer">
           <Form.Group>
-            <h8>slippage tolerance</h8>
+            <h6>slippage tolerance</h6>
             <Form.Control
               style={{ fontSize: "10px" }}
               placeholder="Slippage Tolerance %"
@@ -35,7 +35,7 @@ const SwapConfigs = () => {
             />
           </Form.Group>
           <Form.Group>
-            <h8>transaction Deadline</h8>
+            <h6>transaction Deadline</h6>
             <Form.Control
               style={{ fontSize: "10px" }}
               placeholder="Deadline in minutes"
