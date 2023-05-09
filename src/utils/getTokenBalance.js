@@ -1,16 +1,38 @@
 import { ethers } from "ethers";
-import WETH_ABI from "./erc20Abi";
+import ERC20_ABI from "./erc20Abi";
+import { WETH_TOKEN, WMATIC_TOKEN, LINK_TOKEN } from "./tokenInfoConstants";
 
-const getTokenBalance = async (setTokenBal) => {
+const getTokenBalance = async (setTokenBal, inputTokenSelected) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
-  const WETHAddress = "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa";
-  const WETHContract = new ethers.Contract(WETHAddress, WETH_ABI, signer);
+  let tokenContract;
+  if (inputTokenSelected === "WETH") {
+    tokenContract = new ethers.Contract(
+      WETH_TOKEN.address.toString(),
+      ERC20_ABI,
+      signer
+    );
+  } else if (inputTokenSelected === "WMATIC") {
+    tokenContract = new ethers.Contract(
+      WMATIC_TOKEN.address.toString(),
+      ERC20_ABI,
+      signer
+    );
+  } else if (inputTokenSelected === "LINK") {
+    tokenContract = new ethers.Contract(
+      LINK_TOKEN.address.toString(),
+      ERC20_ABI,
+      signer
+    );
+  } else {
+    throw new Error("error occured in above else-if!");
+  }
+
   const signerAdd = await signer.getAddress();
-  const balance = await WETHContract.balanceOf(signerAdd);
+  const balance = await tokenContract.balanceOf(signerAdd);
   const balanceInWei = balance.toString();
   const balActual = ethers.utils.formatEther(balanceInWei);
-   setTokenBal(balActual.slice(0,7));
+  setTokenBal(balActual.slice(0, 7));
 };
 
 export default getTokenBalance;

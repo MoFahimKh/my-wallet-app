@@ -38,6 +38,8 @@ const SwapToken = () => {
     outputTokenSelected,
   } = useContext(MyContext);
   console.log("inputAmount", inputAmount);
+  console.log("inputTokenSelected", inputTokenSelected);
+
   useEffect(() => {
     getPrice(
       inputAmount,
@@ -91,7 +93,7 @@ const SwapToken = () => {
               value={inputAmount}
               onChange={handleChange}
             />
-            {getTokenBalance(setTokenBal) && (
+            {getTokenBalance(setTokenBal, inputTokenSelected) && (
               <Form.Label className="">{`${inputTokenSelected} balance : ${tokenBal}`}</Form.Label>
             )}
           </Form.Group>
@@ -125,7 +127,7 @@ const SwapToken = () => {
             variant="outline-success"
             onClick={async () => {
               const signer = await getSigner();
-              runSwap(swapTransaction, signer, inputTokenSelected);
+              runSwap(swapTransaction, signer);
             }}
           >
             Swap

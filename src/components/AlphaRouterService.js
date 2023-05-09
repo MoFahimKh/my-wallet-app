@@ -17,28 +17,28 @@ const provider = new ethers.providers.JsonRpcProvider(
 );
 const router = new AlphaRouter({ chainId: chainId, provider: provider });
 
-const WETH = new Token(
-  chainId,
-  WETH_TOKEN.address,
-  WETH_TOKEN.decimal,
-  WETH_TOKEN.symbol,
-  WETH_TOKEN.name
-);
+// const WETH = new Token(
+//   chainId,
+//   WETH_TOKEN.address,
+//   WETH_TOKEN.decimal,
+//   WETH_TOKEN.symbol,
+//   WETH_TOKEN.name
+// );
 
-const WMATIC = new Token(
-  chainId,
-  WMATIC_TOKEN.address,
-  WMATIC_TOKEN.decimal,
-  WMATIC_TOKEN.symbol,
-  WMATIC_TOKEN.name
-);
-const LINK = new Token(
-  chainId,
-  LINK_TOKEN.address,
-  LINK_TOKEN.decimal,
-  LINK_TOKEN.symbol,
-  LINK_TOKEN.name
-);
+// const WMATIC = new Token(
+//   chainId,
+//   WMATIC_TOKEN.address,
+//   WMATIC_TOKEN.decimal,
+//   WMATIC_TOKEN.symbol,
+//   WMATIC_TOKEN.name
+// );
+// const LINK = new Token(
+//   chainId,
+//   LINK_TOKEN.address,
+//   LINK_TOKEN.decimal,
+//   LINK_TOKEN.symbol,
+//   LINK_TOKEN.name
+// );
 export const wethContract = () =>
   new ethers.Contract(WETH_TOKEN.address.toString(), ERC20_ABI, provider);
 export const wmaticContract = () =>
