@@ -17,6 +17,9 @@ function App() {
   const [swapRatio, setSwapRatio] = useState(null);
   const [swappedPrice, setSwappedPrice] = useState(0);
   const [swapTransaction, setSwapTransaction] = useState(null);
+  const [inputTokenSelected, setInputTokenSelected] = useState(null);
+  const [outputTokenSelected, setOutputTokenSelected] = useState(null);
+
   return (
     <div className="main">
       <MyContext.Provider
@@ -43,6 +46,10 @@ function App() {
           setSwappedPrice,
           swapTransaction,
           setSwapTransaction,
+          inputTokenSelected,
+          setInputTokenSelected,
+          outputTokenSelected,
+          setOutputTokenSelected,
         }}
       >
         <Routes>

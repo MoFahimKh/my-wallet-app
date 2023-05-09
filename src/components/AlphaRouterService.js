@@ -32,11 +32,20 @@ const WMATIC = new Token(
   WMATIC_TOKEN.symbol,
   WMATIC_TOKEN.name
 );
-
+const LINK = new Token(
+  chainId,
+  LINK_TOKEN.address,
+  LINK_TOKEN.decimal,
+  LINK_TOKEN.symbol,
+  LINK_TOKEN.name
+);
 export const wethContract = () =>
   new ethers.Contract(WETH_TOKEN.address.toString(), ERC20_ABI, provider);
 export const wmaticContract = () =>
   new ethers.Contract(WMATIC_TOKEN.address.toString(), ERC20_ABI, provider);
+  export const linkContract = () =>
+  new ethers.Contract(LINK_TOKEN.address.toString(), ERC20_ABI, provider);
+
 
 export const getPrice = async (
   inputAmount,

@@ -35,7 +35,7 @@ const SwapToken = () => {
     swapTransaction,
     setSwapTransaction,
   } = useContext(MyContext);
-console.log("inputAmount", inputAmount)
+  console.log("inputAmount", inputAmount);
   useEffect(() => {
     getPrice(
       inputAmount,
@@ -66,7 +66,7 @@ console.log("inputAmount", inputAmount)
           {clicked === true && <SwapConfigs />}
 
           <Form.Group>
-            <SelectTokenDropdown />
+            <SelectTokenDropdown  typeOfToken="input"/>
             <Form.Label>WETH {<CoinIcon coinId="weth" />}</Form.Label>{" "}
             <Form.Control
               type="text"
@@ -78,7 +78,7 @@ console.log("inputAmount", inputAmount)
               <Form.Label className="">{"Weth bal: " + tokenBal}</Form.Label>
             )}
           </Form.Group>
-          <SelectTokenDropdown />
+          <SelectTokenDropdown typeOfToken="output" />
           <div>1 WMATIC = {swapRatio} WETH </div>
           <Form.Group>
             <Form.Label>
