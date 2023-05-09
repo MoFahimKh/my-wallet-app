@@ -1,4 +1,4 @@
-const WETH_ABI = [
+const ERC20_ABI = [
   {
     inputs: [
       { internalType: "string", name: "mockName", type: "string" },
@@ -163,4 +163,4 @@ const WETH_ABI = [
   },
  
 ];
-export default WETH_ABI;
+export default ERC20_ABI;

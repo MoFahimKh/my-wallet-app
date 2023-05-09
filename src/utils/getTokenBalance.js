@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import WETH_ABI from "./wethAbi";
+import WETH_ABI from "./erc20Abi";
 
 const getTokenBalance = async (setTokenBal) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);

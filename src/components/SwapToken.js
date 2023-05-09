@@ -8,11 +8,17 @@ import getTokenBalance from "../utils/getTokenBalance";
 import CoinIcon from "./CoinIcon";
 import getSigner from "../utils/getSigner";
 import { getPrice, runSwap } from "./AlphaRouterService";
+import { getAccount } from "../utils/ethereum";
+import SelectTokenDropdown from "./SelectTokenDropdown";
 
 const SwapToken = () => {
   const [clicked, setClicked] = useState(false);
-  const [inputAmount, setInputAmount] = useState("");
-
+  const [inputAmount, setInputAmount] = useState(0);
+  let signerAddress;
+  const getSignerAddress = async () => {
+    const signerAddressArray = await getAccount();
+    signerAddress = signerAddressArray[0];
+  };
   const handleChange = (event) => {
     setInputAmount(event.target.value);
   };
@@ -29,24 +35,21 @@ const SwapToken = () => {
     swapTransaction,
     setSwapTransaction,
   } = useContext(MyContext);
-
+console.log("inputAmount", inputAmount)
   useEffect(() => {
     getPrice(
       inputAmount,
       slippageTolerance,
       Math.floor(Date.now() / 1000 + transactionDeadline * 60),
-      "0x85392e765680737b29E449FAF37df956f0931f58"
+      signerAddress
     ).then((data) => {
       console.log(data);
       setSwapTransaction(data[0]);
-      console.log("trans " + swapTransaction);
       setSwappedPrice(data[1]);
-      console.log("s price " + swappedPrice);
       setSwapRatio(data[2]);
-      console.log("ratio " + swapRatio);
     });
+    getSignerAddress();
   }, [inputAmount]);
-  
 
   return (
     <div className="body">
@@ -63,6 +66,7 @@ const SwapToken = () => {
           {clicked === true && <SwapConfigs />}
 
           <Form.Group>
+            <SelectTokenDropdown />
             <Form.Label>WETH {<CoinIcon coinId="weth" />}</Form.Label>{" "}
             <Form.Control
               type="text"
@@ -74,6 +78,7 @@ const SwapToken = () => {
               <Form.Label className="">{"Weth bal: " + tokenBal}</Form.Label>
             )}
           </Form.Group>
+          <SelectTokenDropdown />
           <div>1 WMATIC = {swapRatio} WETH </div>
           <Form.Group>
             <Form.Label>

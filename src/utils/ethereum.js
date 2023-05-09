@@ -7,6 +7,12 @@ export const getAccount = async () => {
   return value;
 };
 
+export const getSignerAddress = async () => {
+  const signerAddressArray = await getAccount();
+  let signerAddress = await signerAddressArray[0];
+  return signerAddress;
+};
+
 export const getBalance = async (account) => {
   let balance = await window.ethereum.request({
     method: "eth_getBalance",

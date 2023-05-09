@@ -1,9 +1,6 @@
-import { React, useContext } from "react";
 import { ethers } from "ethers";
-import USDT_ABI from "./usdtAbi";
-import WETH_ABI from "./wethAbi";
+import ERC20_ABI from "./erc20Abi";
 import getSigner from "./getSigner";
-import { MyContext } from "../contextApi/MyContext";
 
 export const sendEther = async (amount, receiversAddress ) => {
   try {
@@ -24,7 +21,7 @@ export const sendUSDT = async (amount, receiversAddress, setTokenBal) => {
     let signer = await getSigner();
     console.log(signer);
     const USDTAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
-    const USDTContract = new ethers.Contract(USDTAddress, USDT_ABI, signer);
+    const USDTContract = new ethers.Contract(USDTAddress, ERC20_ABI, signer);
     const amountInWei = ethers.utils.parseEther(amount);
     const signerAdd = await signer.getAddress();
     const balance = await USDTContract.balanceOf(signerAdd);
@@ -45,7 +42,7 @@ export const sendWETH = async (amount, receiversAddress, setTokenBal) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     let signer = await getSigner();
     const WETHAddress = "0xD0dF82dE051244f04BfF3A8bB1f62E1cD39eED92";
-    const WETHContract = new ethers.Contract(WETHAddress, WETH_ABI, signer);
+    const WETHContract = new ethers.Contract(WETHAddress, ERC20_ABI, signer);
     const amountInWei = ethers.utils.parseEther(amount);
     const signerAdd = await signer.getAddress();
     const balance = await WETHContract.balanceOf(signerAdd);
@@ -66,7 +63,7 @@ export const sendWETH = async (amount, receiversAddress, setTokenBal) => {
 // export const sendERC20 = async (amount, receiversAddress, address) => {
 //   const signer = getSigner();
 //   const erc20Address = address;
-//   const erc20Contract = new ethers.Contract(erc20Address, WETH_ABI, signer);
+//   const erc20Contract = new ethers.Contract(erc20Address, ERC20_ABI, signer);
 //   const amountInWei = ethers.utils.parseEther(amount);
 //   const balance = await erc20Contract.balanceOf(signer);
 //   if (balance > 0) {
