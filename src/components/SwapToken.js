@@ -7,7 +7,7 @@ import { MyContext } from "../contextApi/MyContext";
 import getTokenBalance from "../utils/getTokenBalance";
 import CoinIcon from "./CoinIcon";
 import getSigner from "../utils/getSigner";
-import { getPrice, runSwap } from "./AlphaRouterService";
+import { getPrice, runSwap } from "../utils/alphaRouterService";
 import { getAccount } from "../utils/ethereum";
 import SelectTokenDropdown from "./SelectTokenDropdown";
 

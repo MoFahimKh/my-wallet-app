@@ -2,12 +2,12 @@ import { AlphaRouter } from "@uniswap/smart-order-router";
 import { CurrencyAmount, TradeType, Percent, Token } from "@uniswap/sdk-core";
 import { ethers, BigNumber } from "ethers";
 import JSBI from "jsbi";
-import ERC20_ABI from "../utils/erc20Abi";
+import ERC20_ABI from "./erc20Abi";
 import {
   WETH_TOKEN,
   LINK_TOKEN,
   WMATIC_TOKEN,
-} from "../utils/tokenInfoConstants";
+} from "./tokenInfoConstants";
 
 const v3SwaprouterAddress = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
 const chainId = 80001;
