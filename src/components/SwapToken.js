@@ -7,9 +7,10 @@ import { MyContext } from "../contextApi/MyContext";
 import getTokenBalance from "../utils/getTokenBalance";
 import CoinIcon from "./CoinIcon";
 import getSigner from "../utils/getSigner";
-import { getPrice, runSwap } from "../utils/alphaRouterService";
+import { getPrice } from "../utils/alphaRouterService";
 import { getAccount } from "../utils/ethereum";
 import SelectTokenDropdown from "./SelectTokenDropdown";
+import runSwap from "../utils/runSwap";
 
 const SwapToken = () => {
   const [clicked, setClicked] = useState(false);
@@ -30,15 +31,12 @@ const SwapToken = () => {
     transactionDeadline,
     swapRatio,
     setSwapRatio,
-    swappedPrice,
     setSwappedPrice,
     swapTransaction,
     setSwapTransaction,
     inputTokenSelected,
     outputTokenSelected,
   } = useContext(MyContext);
-  console.log("inputAmount", inputAmount);
-  console.log("inputTokenSelected", inputTokenSelected);
 
   useEffect(() => {
     getPrice(

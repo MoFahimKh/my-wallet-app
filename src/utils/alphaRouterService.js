@@ -1,13 +1,10 @@
 import { AlphaRouter } from "@uniswap/smart-order-router";
-import { CurrencyAmount, TradeType, Percent, Token } from "@uniswap/sdk-core";
+import { CurrencyAmount, TradeType, Percent } from "@uniswap/sdk-core";
 import { ethers, BigNumber } from "ethers";
 import JSBI from "jsbi";
 import ERC20_ABI from "./erc20Abi";
-import {
-  WETH_TOKEN,
-  LINK_TOKEN,
-  WMATIC_TOKEN,
-} from "./tokenInfoConstants";
+import { WETH_TOKEN, LINK_TOKEN, WMATIC_TOKEN } from "./tokenInfoConstants";
+import getToken from "./getToken";
 
 const v3SwaprouterAddress = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
 const chainId = 80001;
@@ -23,43 +20,6 @@ export const wmaticContract = () =>
 export const linkContract = () =>
   new ethers.Contract(LINK_TOKEN.address.toString(), ERC20_ABI, provider);
 
-const getToken = (tokenName) => {
-  switch (tokenName) {
-    case "WETH":
-      return new Token(
-        chainId,
-        WETH_TOKEN.address,
-        WETH_TOKEN.decimal,
-        WETH_TOKEN.symbol,
-        WETH_TOKEN.name
-      );
-    case "WMATIC":
-      return new Token(
-        chainId,
-        WMATIC_TOKEN.address,
-        WMATIC_TOKEN.decimal,
-        WMATIC_TOKEN.symbol,
-        WMATIC_TOKEN.name
-      );
-    case "LINK":
-      return new Token(
-        chainId,
-        LINK_TOKEN.address,
-        LINK_TOKEN.decimal,
-        LINK_TOKEN.symbol,
-        LINK_TOKEN.name
-      );
-    default:
-      return new Token(
-        chainId,
-        WETH_TOKEN.address,
-        WETH_TOKEN.decimal,
-        WETH_TOKEN.symbol,
-        WETH_TOKEN.name
-      );
-  }
-};
-
 export const getPrice = async (
   inputAmount,
   slippageAmount,
@@ -71,9 +31,7 @@ export const getPrice = async (
   const percentSlippage = new Percent(slippageAmount, tknDecimal);
   const wei = ethers.utils.parseUnits(inputAmount.toString());
   const inputToken = getToken(inputTokenSelected);
-  console.log(inputToken);
   const outputToken = getToken(outputTokenSelected);
-  console.log(outputToken);
   const currencyAmount = CurrencyAmount.fromRawAmount(
     inputToken,
     JSBI.BigInt(wei)
@@ -100,18 +58,4 @@ export const getPrice = async (
   const quoteAmountOut = route.quote.toFixed(6);
   const ratio = (inputAmount / quoteAmountOut).toFixed(3);
   return [transaction, quoteAmountOut, ratio];
-};
-
-export const runSwap = async (transaction, signer, inputTokenSelected) => {
-  const approvalAmount = ethers.utils.parseUnits("10", 18).toString();
-  let contract0;
-  if (inputTokenSelected === "WETH") {
-    contract0 = wethContract();
-  } else if (inputTokenSelected === "WMATIC") {
-    contract0 = wmaticContract();
-  } else if ((inputTokenSelected = "LINK")) {
-    contract0 = linkContract();
-  }
-  await contract0.connect(signer).approve(v3SwaprouterAddress, approvalAmount);
-  signer.sendTransaction(transaction);
 };

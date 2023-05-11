@@ -40,7 +40,6 @@ function SelectTokenDropdown({ typeOfToken }) {
 
   return (
     <DropdownButton
-      className="me-auto my-2 my-lg-0"
       variant="outline-success"
       title={titleValue}
       value={selectedToken}
