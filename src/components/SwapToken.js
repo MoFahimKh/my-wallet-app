@@ -11,10 +11,13 @@ import { getPrice } from "../utils/alphaRouterService";
 import { getAccount } from "../utils/ethereum";
 import SelectTokenDropdown from "./SelectTokenDropdown";
 import runSwap from "../utils/runSwap";
+import { BeatLoader } from "react-spinners";
 
 const SwapToken = () => {
   const [clicked, setClicked] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
+  const [inputFieldFilled, setInputFieldFilled] = useState(false);
+  const [priceFetched, setPriceFetched] = useState(false);
   let signerAddress;
   const getSignerAddress = async () => {
     const signerAddressArray = await getAccount();
@@ -22,6 +25,7 @@ const SwapToken = () => {
   };
   const handleChange = (event) => {
     setInputAmount(event.target.value);
+    setInputFieldFilled(true);
   };
 
   const {
@@ -39,21 +43,25 @@ const SwapToken = () => {
   } = useContext(MyContext);
 
   useEffect(() => {
-    getPrice(
-      inputAmount,
-      slippageTolerance,
-      Math.floor(Date.now() / 1000 + transactionDeadline * 60),
-      signerAddress,
-      inputTokenSelected,
-      outputTokenSelected
-    ).then((data) => {
-      console.log(data);
-      setSwapTransaction(data[0]);
-      setSwappedPrice(data[1]);
-      setSwapRatio(data[2]);
-    });
+    if (inputFieldFilled) {
+      getPrice(
+        inputAmount,
+        slippageTolerance,
+        Math.floor(Date.now() / 1000 + transactionDeadline * 60),
+        signerAddress,
+        inputTokenSelected,
+        outputTokenSelected
+      ).then((data) => {
+        console.log(data);
+        setSwapTransaction(data[0]);
+        setSwappedPrice(data[1]);
+        setSwapRatio(data[2]);
+        setInputFieldFilled(false);
+        setPriceFetched(true);
+      });
+    }
     getSignerAddress();
-  }, [inputAmount, inputTokenSelected, outputTokenSelected]);
+  }, [inputAmount, inputTokenSelected, outputTokenSelected, inputFieldFilled]);
 
   return (
     <div className="body">
@@ -68,7 +76,6 @@ const SwapToken = () => {
             <GearFill /> Settings
           </span>
           {clicked === true && <SwapConfigs />}
-
           <Form.Group>
             <SelectTokenDropdown typeOfToken="input" />
             <Form.Label>
@@ -112,24 +119,33 @@ const SwapToken = () => {
                 />
               }
             </Form.Label>{" "}
-            <Form.Control
-              type="text"
-              placeholder=""
-              readOnly
-              value={inputAmount / swapRatio}
-            />
+            <div>
+              {inputAmount &&
+                (priceFetched ? (
+                  <Form.Control
+                    type="text"
+                    placeholder=""
+                    readOnly
+                    value={inputAmount / swapRatio}
+                  />
+                ) : (
+                  <BeatLoader />
+                ))}
+            </div>
             <Form.Label></Form.Label>
           </Form.Group>
           <Button
             className=""
-            variant="outline-success"
+            variant="outline-dark"
             onClick={async () => {
               const signer = await getSigner();
               runSwap(swapTransaction, signer);
             }}
+            disabled={!priceFetched} // disable the button if priceFetched is false
           >
             Swap
           </Button>
+
           <Form.Label></Form.Label>
         </Form>
       </div>
