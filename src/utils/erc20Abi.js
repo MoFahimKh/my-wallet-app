@@ -1,4 +1,4 @@
-const WETH_ABI = [
+const ERC20_ABI = [
   {
     inputs: [
       { internalType: "string", name: "mockName", type: "string" },
@@ -161,31 +161,6 @@ const WETH_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-  {
-    inputs: [
-      { internalType: "address", name: "src", type: "address" },
-      { internalType: "address", name: "dst", type: "address" },
-      { internalType: "uint256", name: "wad", type: "uint256" },
-    ],
-    name: "transferFrom",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
-    name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "wad", type: "uint256" }],
-    name: "withdraw",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  { stateMutability: "payable", type: "receive" },
+ 
 ];
-export default WETH_ABI;
+export default ERC20_ABI;
